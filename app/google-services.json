@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "720121798899",
+    "project_id": "comidajipijapa",
+    "storage_bucket": "comidajipijapa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:720121798899:android:922e7217efa5adcdc4d786",
+        "android_client_info": {
+          "package_name": "com.negocio.comidajipijapa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvND_2EXleBp2_sgCLMn6fs9b4GqHLApE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
