@@ -27,7 +27,7 @@ fun Lugares(navController: NavController) {
             TopAppBar(
                 title = { Text(text = "Locales jipijapa", color = Color.White) },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Blue
+                    containerColor = Color(0, 187, 212)
                 )
             )
         }

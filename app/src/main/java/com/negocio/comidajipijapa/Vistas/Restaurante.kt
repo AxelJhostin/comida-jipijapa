@@ -3,34 +3,35 @@ package com.negocio.comidajipijapa.Vistas
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
+import com.negocio.comidajipijapa.Componentes.ActionButton
 import com.negocio.comidajipijapa.Modelo.Local
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Restaurante(navController: NavController, local: Local) {
     val context = LocalContext.current
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Restaurante", color = Color.White) },
+                title = { Text("Restaurante", color = Color.White) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
@@ -41,96 +42,106 @@ fun Restaurante(navController: NavController, local: Local) {
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Blue
+                    containerColor = Color(0, 187, 212) // Color principal
                 )
             )
         }
     ) { paddingValues ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(10.dp)
+                .padding(16.dp)
         ) {
+
+            // Imagen del restaurante
             Image(
                 painter = rememberAsyncImagePainter(model = local.imagenUrl),
                 contentDescription = "Imagen del local",
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
+                    .padding(bottom = 16.dp)
             )
 
-            Spacer(modifier = Modifier.padding(8.dp))
-            Divider()
-            Spacer(modifier = Modifier.padding(8.dp))
+            // Tarjeta con detalles del restaurante
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFE0F7FA)) // Fondo suave celeste
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = local.nombre,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF00796B) // Verde oscuro
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("Horario: ${local.horario}", style = MaterialTheme.typography.bodyLarge)
+                    Text("Teléfono: ${local.telefono}", style = MaterialTheme.typography.bodyLarge)
+                    Text(
+                        "Días de atención: ${local.diasAtencion.joinToString()}",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
 
-            Text("Nombre: ${local.nombre}", style = MaterialTheme.typography.titleLarge)
-            Text("Horario: ${local.horario}", style = MaterialTheme.typography.bodyLarge)
-            Text("Teléfono: ${local.telefono}", style = MaterialTheme.typography.bodyLarge)
-            Text(
-                "Días de atención: ${local.diasAtencion.joinToString()}",
-                style = MaterialTheme.typography.bodyMedium
-            )
-
-            Spacer(modifier = Modifier.weight(1f)) // Empuja los botones al fondo
+            Spacer(modifier = Modifier.height(24.dp))
 
             // Botones de acción
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Button(
-                    onClick = {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(local.menuUrl))
-                        context.startActivity(intent)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                val buttonColor = Color(77, 208, 225)
+                val textColor = Color(12, 13, 13)
+
+                ActionButton(
+                    text = "Ver Menú",
+                    color = buttonColor,
+                    textColor = textColor
                 ) {
-                    Text("Ver Menú")
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(local.menuUrl))
+                    context.startActivity(intent)
                 }
 
-                Button(
-                    onClick = {
-                        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${local.telefono}"))
-                        context.startActivity(intent)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp)
+                ActionButton(
+                    text = "Llamar al restaurante",
+                    color = buttonColor,
+                    textColor = textColor
                 ) {
-                    Text("Llamar al restaurante")
+                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${local.telefono}"))
+                    context.startActivity(intent)
                 }
 
-                Button(
-                    onClick = {
-                        val intent = Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("https://wa.me/${local.telefono}?text=¡Hola! Quiero más información sobre tu menú.")
-                        )
-                        context.startActivity(intent)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp)
+                ActionButton(
+                    text = "Escribir por WhatsApp",
+                    color = buttonColor,
+                    textColor = textColor
                 ) {
-                    Text("Escribir por WhatsApp")
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://wa.me/${local.telefono}?text=¡Hola! Quiero más información sobre tu menú.")
+                    )
+                    context.startActivity(intent)
                 }
 
-                Button(
-                    onClick = {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(local.ubicacion))
-                        context.startActivity(intent)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp)
+                ActionButton(
+                    text = "Ver Ubicación",
+                    color = buttonColor,
+                    textColor = textColor
                 ) {
-                    Text("Ver Ubicación")
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(local.ubicacion))
+                    context.startActivity(intent)
                 }
-
             }
         }
     }
 }
+
 
 
 @Preview(showBackground = true)

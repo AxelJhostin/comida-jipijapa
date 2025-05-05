@@ -14,12 +14,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,7 +40,10 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
             .fillMaxWidth()
             .padding(8.dp)
             .clickable { onClick() },
-        elevation = CardDefaults.cardElevation(4.dp)
+        elevation = CardDefaults.cardElevation(4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(224, 247, 250)
+        )
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Image(
@@ -64,6 +69,10 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
             Spacer(modifier = Modifier.height(8.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Button(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(77, 208, 225),
+                        contentColor = Color(12, 13, 13)
+                    ),
                     onClick = {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(local.menuUrl))
                         context.startActivity(intent)
@@ -73,6 +82,10 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
                 }
 
                 Button(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(77, 208, 225),
+                        contentColor = Color(12, 13, 13)
+                    ),
                     onClick = {
                         val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${local.telefono}"))
                         context.startActivity(intent)
@@ -81,6 +94,10 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
                     Text("Llamar")
                 }
                 Button(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(77, 208, 225),
+                        contentColor = Color(12, 13, 13)
+                    ),
                     onClick = {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/${local.telefono}?text=¡Hola! Quiero más información sobre tu menú."))
                         context.startActivity(intent)
