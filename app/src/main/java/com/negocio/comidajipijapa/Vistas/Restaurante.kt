@@ -18,11 +18,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.negocio.comidajipijapa.Componentes.ActionButton
 import com.negocio.comidajipijapa.Componentes.EspacioV
@@ -143,70 +141,61 @@ fun Restaurante(navController: NavController, local: Local) {
                 val buttonColor = Color(77, 208, 225)
                 val textColor = Color(12, 13, 13)
 
-                ActionButton(
-                    text = "Ver Menú",
-                    color = buttonColor,
-                    textColor = textColor
+                // Primera fila con dos botones
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(local.menuUrl))
-                    context.startActivity(intent)
-                }
-
-                ActionButton(
-                    text = "Llamar al restaurante",
-                    color = buttonColor,
-                    textColor = textColor
-                ) {
-                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${local.telefono}"))
-                    context.startActivity(intent)
-                }
-
-                ActionButton(
-                    text = "Escribir por WhatsApp",
-                    color = buttonColor,
-                    textColor = textColor
-                ) {
-                    val intent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://wa.me/${local.telefono}?text=¡Hola! Quiero más información sobre tu menú.")
+                    ActionButton(
+                        text = "Ver Menú",
+                        color = buttonColor,
+                        textColor = textColor,
+                        onClick = {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(local.menuUrl))
+                            context.startActivity(intent)
+                        }
                     )
-                    context.startActivity(intent)
+
+                    ActionButton(
+                        text = "Llamar al restaurante",
+                        color = buttonColor,
+                        textColor = textColor,
+                        onClick = {
+                            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${local.telefono}"))
+                            context.startActivity(intent)
+                        }
+                    )
                 }
 
-                ActionButton(
-                    text = "Ver Ubicación",
-                    color = buttonColor,
-                    textColor = textColor
+                // Segunda fila con dos botones
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(local.ubicacion))
-                    context.startActivity(intent)
+                    ActionButton(
+                        text = "Escribir por WhatsApp",
+                        color = buttonColor,
+                        textColor = textColor,
+                        onClick = {
+                            val intent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://wa.me/${local.telefono}?text=¡Hola! Quiero más información sobre tu menú.")
+                            )
+                            context.startActivity(intent)
+                        }
+                    )
+
+                    ActionButton(
+                        text = "Ver Ubicación",
+                        color = buttonColor,
+                        textColor = textColor,
+                        onClick = {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(local.ubicacion))
+                            context.startActivity(intent)
+                        }
+                    )
                 }
             }
         }
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun RestaurantePreview() {
-    val navController = rememberNavController()
-    val localDemo = Local(
-        id = "1",
-        nombre = "Pizzería Don Mario",
-        horario = "12:00 PM - 10:00 PM",
-        categoria = "Pizzería",
-        telefono = "0987654321",
-        menuUrl = "https://drive.google.com/file/d/13Gb6zphmZ9DZ0c9xuQm1CqFfN7WiyXdh/view?usp=sharing",
-        ubicacion = "https://maps.google.com/?q=-1.34,-80.02",
-        imagenUrl = "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
-        imagenesExtra = listOf(
-            "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
-            "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
-            "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
-            "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE"
-        ),
-        diasAtencion = listOf("Lunes", "Martes", "Miércoles", "Viernes", "Sábado")
-    )
-    Restaurante(navController = navController, local = localDemo)
 }
