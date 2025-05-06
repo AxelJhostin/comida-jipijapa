@@ -4,6 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -13,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,7 +24,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.negocio.comidajipijapa.Componentes.ActionButton
+import com.negocio.comidajipijapa.Componentes.EspacioV
 import com.negocio.comidajipijapa.Modelo.Local
+import com.negocio.comidajipijapa.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,15 +60,47 @@ fun Restaurante(navController: NavController, local: Local) {
                 .padding(16.dp)
         ) {
 
-            // Imagen del restaurante
+            // Imagen del restaurante - principal
             Image(
-                painter = rememberAsyncImagePainter(model = local.imagenUrl),
+                painter = rememberAsyncImagePainter(
+                    model = local.imagenUrl,
+                    placeholder = painterResource(R.drawable.placeholder),
+                    error = painterResource(R.drawable.error)
+                ),
                 contentDescription = "Imagen del local",
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
                     .padding(bottom = 16.dp)
             )
+            //Galeria de imagenes extras
+            if (local.imagenesExtra.isNotEmpty()){
+                Text(
+                    text = "Galería",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.
+                    fillMaxWidth().
+                    height(120.dp)
+                ) {
+                    items(local.imagenesExtra){ imageUrl ->
+                        Image(
+                            painter = rememberAsyncImagePainter(model = imageUrl),
+                            contentDescription = "Imagenes extrasss",
+                            modifier = Modifier
+                                .width(160.dp)
+                                .fillMaxHeight()
+                        )
+
+                    }
+                }
+                EspacioV(16)
+
+            }
 
             // Tarjeta con detalles del restaurante
             Card(
@@ -143,19 +180,25 @@ fun Restaurante(navController: NavController, local: Local) {
 }
 
 
-
 @Preview(showBackground = true)
 @Composable
 fun RestaurantePreview() {
     val navController = rememberNavController()
     val localDemo = Local(
         id = "1",
-        nombre = "Cevichería El Buen Sabor",
-        horario = "10:00 AM - 9:00 PM",
-        telefono = "0999999999",
-        menuUrl = "https://example.com/menu.pdf",
-        ubicacion = "https://maps.google.com/?q=-1.33,-80.01",
-        imagenUrl = "https://drive.google.com/uc?export=download&id=1tYqQAsLGK2Szj583iLmeQGhWm8ZRV6O_",
+        nombre = "Pizzería Don Mario",
+        horario = "12:00 PM - 10:00 PM",
+        categoria = "Pizzería",
+        telefono = "0987654321",
+        menuUrl = "https://drive.google.com/file/d/13Gb6zphmZ9DZ0c9xuQm1CqFfN7WiyXdh/view?usp=sharing",
+        ubicacion = "https://maps.google.com/?q=-1.34,-80.02",
+        imagenUrl = "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
+        imagenesExtra = listOf(
+            "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
+            "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
+            "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
+            "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE"
+        ),
         diasAtencion = listOf("Lunes", "Martes", "Miércoles", "Viernes", "Sábado")
     )
     Restaurante(navController = navController, local = localDemo)

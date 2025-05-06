@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.negocio.comidajipijapa.Modelo.Local
 import com.negocio.comidajipijapa.R
 import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 
 @Composable
 fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
@@ -46,12 +47,22 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
         )
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
+            // Modificación para redimensionar la imagen
+            val painter = rememberImagePainter(
+                data = local.imagenUrl,
+                builder = {
+                    crossfade(true) // Deslizar para transición suave
+                    placeholder(R.drawable.placeholder) // Placeholder
+                    error(R.drawable.error) // Imagen de error
+                    size(800, 800) // Redimensionar la imagen
+                }
+            )
             Image(
-                painter = rememberAsyncImagePainter(model = local.imagenUrl),
+                painter = painter,
                 contentDescription = "Imagen del local",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(180.dp)
+                    .height(180.dp)  // Ajusta la altura según lo necesites
             )
             EspacioV(8)
             Text(
@@ -99,7 +110,10 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
                         contentColor = Color(12, 13, 13)
                     ),
                     onClick = {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/${local.telefono}?text=¡Hola! Quiero más información sobre tu menú."))
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://wa.me/${local.telefono}?text=¡Hola! Quiero más información sobre tu menú.")
+                        )
                         context.startActivity(intent)
                     },
                     modifier = Modifier.fillMaxWidth()
@@ -111,17 +125,26 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
     }
 }
 
+
+
 @Preview(showBackground = true)
 @Composable
 fun LocalOpcionPreview() {
     val localDemo = Local(
         id = "1",
-        nombre = "Cevichería El Buen Sabor",
-        horario = "10:00 AM - 9:00 PM",
-        telefono = "0999999999",
-        menuUrl = "https://example.com/menu.pdf",
-        ubicacion = "https://maps.google.com/?q=-1.33,-80.01",
-        imagenUrl = "https://drive.google.com/uc?export=download&id=1tYqQAsLGK2Szj583iLmeQGhWm8ZRV6O_",
+        nombre = "Pizzería Don Mario",
+        horario = "12:00 PM - 10:00 PM",
+        categoria = "Pizzería",
+        telefono = "0987654321",
+        menuUrl = "https://drive.google.com/file/d/13Gb6zphmZ9DZ0c9xuQm1CqFfN7WiyXdh/view?usp=sharing",
+        ubicacion = "https://maps.google.com/?q=-1.34,-80.02",
+        imagenUrl = "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
+        imagenesExtra = listOf(
+            "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
+            "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
+            "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
+            "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE"
+        ),
         diasAtencion = listOf("Lunes", "Martes", "Miércoles", "Viernes", "Sábado")
     )
     LocalOpcion(local = localDemo)
@@ -129,11 +152,11 @@ fun LocalOpcionPreview() {
 
 
 @Composable
-fun EspacioV(i:Int){
+fun EspacioV(i: Int) {
     Spacer(modifier = Modifier.height(i.dp))
 }
 
 @Composable
-fun EspacioH(i:Int){
+fun EspacioH(i: Int) {
     Spacer(modifier = Modifier.width(i.dp))
 }
