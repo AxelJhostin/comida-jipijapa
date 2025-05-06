@@ -51,10 +51,13 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
             val painter = rememberImagePainter(
                 data = local.imagenUrl,
                 builder = {
-                    crossfade(true) // Deslizar para transición suave
+                    //el crossfade hace algo raro, que la imagen la hace pequeña hasta que mueva
+                    //la esa para abajo o para arriba, las razones no las sé
+                    //por eso la deje en false
+                    crossfade(false) // Deslizar para transición suave
                     placeholder(R.drawable.placeholder) // Placeholder
                     error(R.drawable.error) // Imagen de error
-                    size(800, 800) // Redimensionar la imagen
+                    size(1200, 1200) // Redimensionar la imagen
                 }
             )
             Image(

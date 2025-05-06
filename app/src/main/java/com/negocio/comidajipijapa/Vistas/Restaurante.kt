@@ -3,6 +3,7 @@ package com.negocio.comidajipijapa.Vistas
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -10,7 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,6 +33,7 @@ import com.negocio.comidajipijapa.R
 @Composable
 fun Restaurante(navController: NavController, local: Local) {
     val context = LocalContext.current
+    var selectedImageUrl by remember { mutableStateOf<String?>(null) }
 
     Scaffold(
         topBar = {
@@ -73,8 +75,9 @@ fun Restaurante(navController: NavController, local: Local) {
                     .height(200.dp)
                     .padding(bottom = 16.dp)
             )
-            //Galeria de imagenes extras
-            if (local.imagenesExtra.isNotEmpty()){
+
+            // Galería de imágenes extras
+            if (local.imagenesExtra.isNotEmpty()) {
                 Text(
                     text = "Galería",
                     fontSize = 18.sp,
@@ -83,23 +86,27 @@ fun Restaurante(navController: NavController, local: Local) {
                 )
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.
-                    fillMaxWidth().
-                    height(120.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp)
                 ) {
-                    items(local.imagenesExtra){ imageUrl ->
+                    items(local.imagenesExtra) { imageUrl ->
+                        val isSelected = selectedImageUrl == imageUrl
                         Image(
                             painter = rememberAsyncImagePainter(model = imageUrl),
-                            contentDescription = "Imagenes extrasss",
+                            contentDescription = "Imagen extra",
                             modifier = Modifier
-                                .width(160.dp)
+                                .width(if (isSelected) 250.dp else 160.dp) // Aumenta el tamaño si está seleccionada
                                 .fillMaxHeight()
+                                .padding(4.dp)
+                                .clickable {
+                                    // Cambiar la imagen seleccionada
+                                    selectedImageUrl = if (isSelected) null else imageUrl
+                                }
                         )
-
                     }
                 }
                 EspacioV(16)
-
             }
 
             // Tarjeta con detalles del restaurante
