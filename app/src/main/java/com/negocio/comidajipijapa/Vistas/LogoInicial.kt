@@ -29,7 +29,7 @@ import kotlinx.coroutines.delay
 fun LogoInicial(navController: NavController){
 //Efecto para pasar de pantalla a otra pasando 3 segundos
     LaunchedEffect(Unit) {
-        delay(3000)
+        delay(1000)
         navController.navigate("Lugares")
     }
 

@@ -22,10 +22,7 @@ fun ActionButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = color,
             contentColor = textColor
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp)
+        )
     ) {
         Text(text)
     }
