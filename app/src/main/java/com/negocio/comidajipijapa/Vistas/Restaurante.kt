@@ -30,6 +30,7 @@ import com.negocio.comidajipijapa.R
 fun Restaurante(navController: NavController, local: Local) {
     val context = LocalContext.current
     var selectedImageUrl by remember { mutableStateOf<String?>(null) }
+    var isFavorita by remember { mutableStateOf(false) } // icono de estrella - estado
 
     Scaffold(
         topBar = {
@@ -50,6 +51,23 @@ fun Restaurante(navController: NavController, local: Local) {
                             contentDescription = "Atrás",
                             tint = Color.White
                         )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = {isFavorita = !isFavorita}) {
+                        if (isFavorita){
+                            Icon(
+                                imageVector = Icons.Filled.Star,
+                                contentDescription = "Favorito",
+                                tint = Color(255,215,0) // Amarillo dorado
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Filled.Star,
+                                contentDescription = "no favorito",
+                                tint = Color.White
+                            )
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
