@@ -129,6 +129,16 @@ fun Restaurante(navController: NavController, local: Local) {
                         }
                         Text("Ubicación", fontSize = 13.sp, color = Color.White)
                     }
+
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        IconButton(onClick = {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(local.instagram))
+                            context.startActivity(intent)
+                        }) {
+                            Icon(Icons.Default.Person, contentDescription = "red social")
+                        }
+                        Text("Instagram", fontSize = 13.sp, color = Color.White)
+                    }
                 }
             }
         }

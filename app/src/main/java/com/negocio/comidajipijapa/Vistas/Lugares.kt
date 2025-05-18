@@ -1,5 +1,6 @@
 package com.negocio.comidajipijapa.Vistas
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -32,7 +33,8 @@ fun Lugares(navController: NavController) {
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0, 187, 212)
+                    //containerColor = Color(0, 187, 212)
+                    containerColor = Color(255,87,34) // sabores tradicionales
                 )
             )
         }
@@ -41,6 +43,7 @@ fun Lugares(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                .background(Color(252,228,236))
         ) {
             BarraBusqueda(searchQuery)
 

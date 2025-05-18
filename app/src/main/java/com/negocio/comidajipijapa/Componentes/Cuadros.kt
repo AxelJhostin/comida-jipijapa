@@ -43,7 +43,8 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
             .clickable { onClick() },
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(224, 247, 250)
+            //containerColor = Color(224, 247, 250) // principal base
+            containerColor = Color(156,39,176) // sabores tradicionales
         )
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
@@ -127,7 +128,6 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
         }
     }
 }
-
 
 
 @Preview(showBackground = true)

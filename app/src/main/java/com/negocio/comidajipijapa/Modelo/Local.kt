@@ -10,7 +10,8 @@ data class Local(
     val ubicacion: String = "",   // Enlace de Google Maps
     val imagenUrl: String = "",   // Imagen principal del local
     val imagenesExtra: List<String> = emptyList(), // Imágenes adicionales
-    val diasAtencion: List<String> = emptyList() // Días que abre
+    val diasAtencion: List<String> = emptyList(), // Días que abre
+    val instagram: String = "" //redes sociales para buscar
 )
 
 val locales = listOf(
@@ -29,7 +30,8 @@ val locales = listOf(
             "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
             "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE"
         ),
-        diasAtencion = listOf("Lunes", "Martes", "Miércoles", "Viernes", "Sábado")
+        diasAtencion = listOf("Lunes", "Martes", "Miércoles", "Viernes", "Sábado"),
+        instagram = "https://www.instagram.com/pucemanabi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
     ),
     Local(
         id = "2",
@@ -46,7 +48,8 @@ val locales = listOf(
             "https://drive.google.com/uc?export=download&id=10H6KmeydbGj0yk5A16Lz2wiX1YslPW-e",
             "https://drive.google.com/uc?export=download&id=10H6KmeydbGj0yk5A16Lz2wiX1YslPW-e"
         ),
-        diasAtencion = listOf("Martes", "Jueves", "Viernes", "Domingo")
+        diasAtencion = listOf("Martes", "Jueves", "Viernes", "Domingo"),
+        instagram = "https://www.instagram.com/pucemanabi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
     ),
     Local(
         id = "3",
@@ -63,7 +66,8 @@ val locales = listOf(
             "https://drive.google.com/uc?export=download&id=1ZkiCSxdm8Yg2IVV4mdbKUZHyynHCY_bz",
             "https://drive.google.com/uc?export=download&id=1ZkiCSxdm8Yg2IVV4mdbKUZHyynHCY_bz"
         ),
-        diasAtencion = listOf("Martes", "Jueves", "Viernes", "Domingo")
+        diasAtencion = listOf("Martes", "Jueves", "Viernes", "Domingo"),
+        instagram = "https://www.instagram.com/pucemanabi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
     ),
     Local(
         id = "4",
@@ -80,7 +84,8 @@ val locales = listOf(
             "https://drive.google.com/uc?export=download&id=1tYqQAsLGK2Szj583iLmeQGhWm8ZRV6O_",
             "https://drive.google.com/uc?export=download&id=1ZkiCSxdm8Yg2IVV4mdbKUZHyynHCY_bz"
         ),
-        diasAtencion = listOf("Martes", "Jueves", "Viernes", "Domingo")
+        diasAtencion = listOf("Martes", "Jueves", "Viernes", "Domingo"),
+        instagram = "https://www.instagram.com/pucemanabi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
     ),
     Local(
         id = "5",
@@ -97,7 +102,8 @@ val locales = listOf(
             "https://drive.google.com/uc?export=download&id=1tYqQAsLGK2Szj583iLmeQGhWm8ZRV6O_",
             "https://drive.google.com/uc?export=download&id=1UsA1YzXP22TqqaS0vxWZE1btDeGtgF64"
         ),
-        diasAtencion = listOf("Martes", "Jueves", "Viernes", "Domingo")
+        diasAtencion = listOf("Martes", "Jueves", "Viernes", "Domingo"),
+        instagram = "https://www.instagram.com/pucemanabi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
     ),
     Local(
         id = "6",
@@ -114,6 +120,7 @@ val locales = listOf(
             "https://drive.google.com/uc?export=download&id=1sy0bYrzsHNJlsTay0Id2d4T28GPjLuEV",
             "https://drive.google.com/uc?export=download&id=1UsA1YzXP22TqqaS0vxWZE1btDeGtgF64"
         ),
-        diasAtencion = listOf("Martes", "Jueves", "Viernes", "Domingo")
+        diasAtencion = listOf("Martes", "Jueves", "Viernes", "Domingo"),
+        instagram = "https://www.instagram.com/pucemanabi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
     )
 )
