@@ -44,7 +44,8 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(
             //containerColor = Color(224, 247, 250) // principal base
-            containerColor = Color(156,39,176) // sabores tradicionales
+            //containerColor = Color(156,39,176) // sabores tradicionales
+            containerColor = Color(205, 248, 184, 255)//verde azulado oscuro
         )
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
@@ -85,7 +86,7 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Button(
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(77, 208, 225),
+                        containerColor = Color(116, 165, 123, 255),
                         contentColor = Color(12, 13, 13)
                     ),
                     onClick = {
@@ -98,7 +99,7 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
 
                 Button(
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(77, 208, 225),
+                        containerColor = Color(116, 165, 123, 255),
                         contentColor = Color(12, 13, 13)
                     ),
                     onClick = {
@@ -110,7 +111,7 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
                 }
                 Button(
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(77, 208, 225),
+                        containerColor = Color(116, 165, 123, 255),
                         contentColor = Color(12, 13, 13)
                     ),
                     onClick = {

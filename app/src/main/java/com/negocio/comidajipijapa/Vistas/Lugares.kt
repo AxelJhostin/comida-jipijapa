@@ -34,7 +34,8 @@ fun Lugares(navController: NavController) {
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     //containerColor = Color(0, 187, 212)
-                    containerColor = Color(255,87,34) // sabores tradicionales
+                    //containerColor = Color(255,87,34) // sabores tradicionales
+                    containerColor = Color(33,215,109) // verde lima
                 )
             )
         }
@@ -43,7 +44,7 @@ fun Lugares(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(Color(252,228,236))
+                .background(Color(250,250,250))
         ) {
             BarraBusqueda(searchQuery)
 

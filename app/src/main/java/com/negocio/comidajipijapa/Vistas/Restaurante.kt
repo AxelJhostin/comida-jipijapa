@@ -3,6 +3,7 @@ package com.negocio.comidajipijapa.Vistas
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -71,14 +72,14 @@ fun Restaurante(navController: NavController, local: Local) {
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0, 187, 212)
+                    containerColor = Color(33,215,109)
                 )
             )
         },
 
         bottomBar = {
             BottomAppBar(
-                containerColor = Color(0xFF00BCD4),
+                containerColor = Color(33,215,109),
                 contentColor = Color.White,
                 tonalElevation = 8.dp
             ) {
@@ -147,6 +148,7 @@ fun Restaurante(navController: NavController, local: Local) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                .background(Color(250,250,250))
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState()) // Habilita scroll vertical
         ) {
