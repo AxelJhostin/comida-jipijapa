@@ -20,6 +20,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Navegacion()
+            //prueba de funcionamiento desde el main
         }
     }
 }
