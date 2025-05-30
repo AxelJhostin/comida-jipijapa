@@ -79,6 +79,10 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
                 style = MaterialTheme.typography.bodyMedium
             )
             Text(
+                text = "Dirección: ${local.direccionFisica}",
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Text(
                 text = "Días: ${local.diasAtencion.joinToString()}",
                 style = MaterialTheme.typography.bodySmall
             )
@@ -143,6 +147,7 @@ fun LocalOpcionPreview() {
         menuUrl = "https://drive.google.com/file/d/13Gb6zphmZ9DZ0c9xuQm1CqFfN7WiyXdh/view?usp=sharing",
         ubicacion = "https://maps.google.com/?q=-1.34,-80.02",
         imagenUrl = "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
+        direccionFisica = "Av. Principal y calle 10, Jipijapa", // 👈 Añadido aquí
         imagenesExtra = listOf(
             "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
             "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
