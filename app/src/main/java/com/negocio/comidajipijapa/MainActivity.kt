@@ -21,6 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Navegacion()
             //prueba de funcionamiento desde el main
+            //prueba desde la nueva ramalapto
         }
     }
 }
