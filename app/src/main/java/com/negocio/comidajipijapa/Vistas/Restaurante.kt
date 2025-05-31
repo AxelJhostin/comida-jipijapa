@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.google.ai.client.generativeai.Chat
+import com.negocio.comidajipijapa.Componentes.DetailItemRow
 import com.negocio.comidajipijapa.Modelo.Local
 import com.negocio.comidajipijapa.R
 
@@ -125,8 +127,15 @@ fun Restaurante(navController: NavController, local: Local) {
                         }) {
                             // Puedes usar un ícono específico de WhatsApp si lo tienes en tus resources
                             // o uno genérico como MailOutline o Chat
-                            Icon(painterResource(id = R.drawable.instagram), contentDescription = "WhatsApp", modifier = Modifier.size(24.dp)) // Asumiendo que tienes ic_whatsapp
-                            // Icon(Icons.Default.Chat, contentDescription = "WhatsApp") // Alternativa
+                            //Icon(painterResource(id = R.drawable.instagram), contentDescription = "WhatsApp", modifier = Modifier.size(24.dp)) // Asumiendo que tienes ic_whatsapp
+                            Icon(
+                                imageVector = Icons.Filled.AccountBox, // Ícono de chat, adecuado para WhatsApp
+                                contentDescription = "WhatsApp",
+                                modifier = Modifier.size(24.dp),
+                                // El tint Color.White debería ser heredado del contentColor del BottomAppBar,
+                                // pero podemos añadirlo explícitamente para asegurar.
+                                tint = Color.White
+                            )
                         }
                         Text("WhatsApp", fontSize = 13.sp, color = Color.White)
                     }
@@ -146,8 +155,8 @@ fun Restaurante(navController: NavController, local: Local) {
                             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(local.instagram))
                             context.startActivity(intent)
                         }) {
-                            Icon(painterResource(id = R.drawable.instagram), contentDescription = "Instagram", modifier = Modifier.size(24.dp)) // Asumiendo que tienes ic_instagram
-                            // Icon(Icons.Default.Share, contentDescription = "Red Social") // Alternativa
+                            //Icon(painterResource(id = R.drawable.instagram), contentDescription = "Instagram", modifier = Modifier.size(24.dp)) // Asumiendo que tienes ic_instagram
+                             Icon(Icons.Default.Share, contentDescription = "Red Social") // Alternativa
                         }
                         Text("Instagram", fontSize = 13.sp, color = Color.White)
                     }
@@ -282,40 +291,3 @@ fun Restaurante(navController: NavController, local: Local) {
     }
 }
 
-@Composable
-fun DetailItemRow(
-    icon: ImageVector,
-    label: String,
-    value: String,
-    iconColor: Color = MaterialTheme.colorScheme.primary // Color por defecto para el ícono
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 6.dp), // Espacio vertical entre cada item
-        verticalAlignment = Alignment.Top // Alinea el ícono con la primera línea del texto si el valor es largo
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = label,
-            tint = iconColor,
-            modifier = Modifier
-                .size(20.dp) // Tamaño del ícono
-                .padding(end = 10.dp) // Espacio entre ícono y texto
-        )
-        Column { // Usamos Column para que el label y el value puedan estar uno encima de otro si es necesario o para más control.
-            // Pero aquí los pondremos en línea con Text Spans si fuera necesario o simplemente concatenados.
-            Text(
-                text = label,
-                fontWeight = FontWeight.SemiBold, // Label un poco más destacado
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant // Un gris oscuro, no tan fuerte como el negro puro
-            )
-            Text(
-                text = value,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface // Color de texto principal
-            )
-        }
-    }
-}
