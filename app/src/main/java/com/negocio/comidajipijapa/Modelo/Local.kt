@@ -8,11 +8,13 @@ data class Local(
     val telefono: String = "",
     val menuUrl: String = "",     // Enlace al menú en PDF
     val ubicacion: String = "",   // Enlace de Google Maps
+    val direccionFisica: String = "", // ✅ Nueva dirección física
     val imagenUrl: String = "",   // Imagen principal del local
     val imagenesExtra: List<String> = emptyList(), // Imágenes adicionales
     val diasAtencion: List<String> = emptyList(), // Días que abre
-    val instagram: String = "" //redes sociales para buscar
+    val instagram: String = "" // Redes sociales para buscar
 )
+
 
 val locales = listOf(
     Local(
@@ -23,6 +25,7 @@ val locales = listOf(
         telefono = "0987654321",
         menuUrl = "https://drive.google.com/file/d/13Gb6zphmZ9DZ0c9xuQm1CqFfN7WiyXdh/view?usp=sharing",
         ubicacion = "https://maps.google.com/?q=-1.34,-80.02",
+        direccionFisica = "Av. Principal y calle 10, Jipijapa", // 👈 Añadido aquí
         imagenUrl = "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
         imagenesExtra = listOf(
             "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
@@ -42,6 +45,7 @@ val locales = listOf(
         menuUrl = "https://drive.google.com/file/d/13Gb6zphmZ9DZ0c9xuQm1CqFfN7WiyXdh/view?usp=sharing",
         ubicacion = "https://maps.google.com/?q=-1.33,-80.01",
         imagenUrl = "https://drive.google.com/uc?export=download&id=10H6KmeydbGj0yk5A16Lz2wiX1YslPW-e",
+        direccionFisica = "Av. Principal y calle 10, Jipijapa", // 👈 Añadido aquí
         imagenesExtra = listOf(
             "https://drive.google.com/uc?export=download&id=10H6KmeydbGj0yk5A16Lz2wiX1YslPW-e",
             "https://drive.google.com/uc?export=download&id=10H6KmeydbGj0yk5A16Lz2wiX1YslPW-e",
@@ -60,6 +64,7 @@ val locales = listOf(
         menuUrl = "https://drive.google.com/file/d/13Gb6zphmZ9DZ0c9xuQm1CqFfN7WiyXdh/view?usp=sharing",
         ubicacion = "https://maps.google.com/?q=-1.33,-80.01",
         imagenUrl = "https://drive.google.com/uc?export=download&id=1ZkiCSxdm8Yg2IVV4mdbKUZHyynHCY_bz",
+        direccionFisica = "Av. Principal y calle 10, Jipijapa", // 👈 Añadido aquí
         imagenesExtra = listOf(
             "https://drive.google.com/uc?export=download&id=1ZkiCSxdm8Yg2IVV4mdbKUZHyynHCY_bz",
             "https://drive.google.com/uc?export=download&id=1ZkiCSxdm8Yg2IVV4mdbKUZHyynHCY_bz",
@@ -78,6 +83,7 @@ val locales = listOf(
         menuUrl = "https://drive.google.com/file/d/13Gb6zphmZ9DZ0c9xuQm1CqFfN7WiyXdh/view?usp=sharing",
         ubicacion = "https://maps.google.com/?q=-1.33,-80.01",
         imagenUrl = "https://drive.google.com/uc?export=download&id=1tYqQAsLGK2Szj583iLmeQGhWm8ZRV6O_",
+        direccionFisica = "Av. Principal y calle 10, Jipijapa", // 👈 Añadido aquí
         imagenesExtra = listOf(
             "https://drive.google.com/uc?export=download&id=1tYqQAsLGK2Szj583iLmeQGhWm8ZRV6O_",
             "https://drive.google.com/uc?export=download&id=1ZkiCSxdm8Yg2IVV4mdbKUZHyynHCY_bz",
@@ -96,6 +102,7 @@ val locales = listOf(
         menuUrl = "https://drive.google.com/file/d/13Gb6zphmZ9DZ0c9xuQm1CqFfN7WiyXdh/view?usp=sharing",
         ubicacion = "https://maps.google.com/?q=-1.33,-80.01",
         imagenUrl = "https://drive.google.com/uc?export=download&id=1UsA1YzXP22TqqaS0vxWZE1btDeGtgF64",
+        direccionFisica = "Av. Principal y calle 10, Jipijapa", // 👈 Añadido aquí
         imagenesExtra = listOf(
             "https://drive.google.com/uc?export=download&id=1tYqQAsLGK2Szj583iLmeQGhWm8ZRV6O_",
             "https://drive.google.com/uc?export=download&id=1UsA1YzXP22TqqaS0vxWZE1btDeGtgF64",
@@ -114,6 +121,7 @@ val locales = listOf(
         menuUrl = "https://drive.google.com/file/d/13Gb6zphmZ9DZ0c9xuQm1CqFfN7WiyXdh/view?usp=sharing",
         ubicacion = "https://maps.google.com/?q=-1.33,-80.01",
         imagenUrl = "https://drive.google.com/uc?export=download&id=1sy0bYrzsHNJlsTay0Id2d4T28GPjLuEV",
+        direccionFisica = "Av. Principal y calle 10, Jipijapa", // 👈 Añadido aquí
         imagenesExtra = listOf(
             "https://drive.google.com/uc?export=download&id=1sy0bYrzsHNJlsTay0Id2d4T28GPjLuEV",
             "https://drive.google.com/uc?export=download&id=1UsA1YzXP22TqqaS0vxWZE1btDeGtgF64",
