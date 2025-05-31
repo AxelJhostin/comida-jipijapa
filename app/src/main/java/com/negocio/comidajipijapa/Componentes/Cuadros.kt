@@ -36,119 +36,80 @@ import com.negocio.comidajipijapa.R
 
 @Composable
 fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
-    val context = LocalContext.current
+    // val context = LocalContext.current // Ya no se necesita si los botones de Intent se van
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            // No necesitas .padding(8.dp) aquí si tu LazyColumn ya tiene Arrangement.spacedBy()
-            // o contentPadding. Si no, puedes añadirlo: .padding(vertical = 4.dp /*o lo que necesites*/)
-            .clickable { onClick() },
-        shape = RoundedCornerShape(16.dp), // Esquinas más redondeadas
+            .clickable { onClick() }, // La tarjeta entera sigue siendo clickeable para navegar
+        shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(205, 248, 184, 255) // Tu color verde pálido original
+            containerColor = Color(205, 248, 184) // Tu color verde pálido (RGB)
         )
     ) {
         Column {
-            // Manejo de Imagen Mejorado
             val imagePainter = rememberAsyncImagePainter(
                 model = local.imagenUrl,
                 placeholder = painterResource(R.drawable.placeholder),
-                error = painterResource(R.drawable.error),
-                // Si el problema del crossfade persiste con AsyncImagePainter, considera crossfade(false)
-                // en un ImageRequest.Builder(LocalContext.current).data(local.imagenUrl).crossfade(false).build()
+                error = painterResource(R.drawable.error)
             )
             Image(
                 painter = imagePainter,
                 contentDescription = "Imagen del local: ${local.nombre}",
-                contentScale = ContentScale.Crop, // Importante para llenar el espacio sin distorsión
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(170.dp) // Altura de la imagen
-                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)) // Redondear solo esquinas superiores
-                    .background(Color.LightGray) // Fondo mientras carga la imagen
+                    .height(170.dp)
+                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                    .background(Color(204, 204, 204)) // Color LightGray en RGB
             )
 
-            // Contenido Textual y Botones
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 12.dp) // Padding interno
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
             ) {
                 Text(
                     text = local.nombre,
-                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold), // Un poco más grande
-                    color = Color(0xFF004D40) // Un verde oscuro para buen contraste
+                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    color = Color(0, 77, 64) // Tu verde oscuro (0xFF004D40) en RGB
                 )
 
-                Spacer(modifier = Modifier.height(10.dp)) // Reemplaza EspacioV(8)
+                Spacer(modifier = Modifier.height(10.dp))
 
-                // Información del local con íconos
+                // Información del local con TUS íconos preferidos
                 InfoRowWithIcon(
-                    icon = Icons.Outlined.Star,
+                    icon = Icons.Outlined.Star, // Ícono que usas para Horario
                     text = "Horario: ${local.horario}"
                 )
                 InfoRowWithIcon(
-                    icon = Icons.Outlined.LocationOn,
+                    icon = Icons.Outlined.LocationOn, // Ícono que usas para Dirección
                     text = "Dirección: ${local.direccionFisica}"
                 )
                 InfoRowWithIcon(
-                    icon = Icons.Outlined.DateRange,
-                    text = "Días: ${local.diasAtencion.joinToString(", ")}" // Formato con coma y espacio
+                    icon = Icons.Outlined.DateRange, // Ícono que usas para Días
+                    text = "Días: ${local.diasAtencion.joinToString(", ")}"
                 )
 
-                Spacer(modifier = Modifier.height(16.dp)) // Espacio antes de los botones
+                Spacer(modifier = Modifier.height(16.dp)) // Espacio antes del nuevo botón
 
-                // Fila de Botones de Acción
-                Row(
+                // --- NUEVO BOTÓN ÚNICO PARA NAVEGAR ---
+                Button(
+                    onClick = onClick, // Llama a la función onClick principal para navegar
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp), // Espacio entre botones
-                    verticalAlignment = Alignment.CenterVertically
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0, 121, 107), // Un teal oscuro (0xFF00796B) en RGB
+                        contentColor = Color(255, 255, 255)  // Color Blanco en RGB
+                    )
                 ) {
-                    ActionButton(
-                        text = "Menú",
-                        icon = Icons.Filled.Menu, // Ícono específico
-                        onClick = {
-                            try {
-                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(local.menuUrl))
-                                context.startActivity(intent)
-                            } catch (e: Exception) { /* Manejar URL inválida o error */ }
-                        },
-                        modifier = Modifier.weight(1f), // Para distribuir el ancho equitativamente
-                        buttonColors = ButtonDefaults.buttonColors( // Tus colores de botón
-                            containerColor = Color(116, 165, 123, 255),
-                            contentColor = Color(12, 13, 13)
-                        )
-                    )
-                    ActionButton(
-                        text = "Llamar",
-                        icon = Icons.Filled.Call,
-                        onClick = {
-                            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${local.telefono}"))
-                            context.startActivity(intent)
-                        },
-                        modifier = Modifier.weight(1f),
-                        buttonColors = ButtonDefaults.buttonColors(
-                            containerColor = Color(116, 165, 123, 255),
-                            contentColor = Color(12, 13, 13)
-                        )
-                    )
-                    ActionButton(
-                        text = "WhatsApp",
-                        icon = Icons.Filled.Email, // Ícono de Chat, más apropiado que Email
-                        onClick = {
-                            val intent = Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("https://wa.me/${local.telefono}?text=¡Hola! Vengo de la app y quiero más información sobre ${local.nombre}.")
-                            )
-                            context.startActivity(intent)
-                        },
-                        modifier = Modifier.weight(1f),
-                        buttonColors = ButtonDefaults.buttonColors(
-                            containerColor = Color(116, 165, 123, 255),
-                            contentColor = Color(12, 13, 13)
-                        )
+                    Text("Ver Detalles") // Texto más corto para el botón
+                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                    Icon(
+                        imageVector = Icons.Filled.ArrowForward,
+                        contentDescription = null,
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
                     )
                 }
             }
