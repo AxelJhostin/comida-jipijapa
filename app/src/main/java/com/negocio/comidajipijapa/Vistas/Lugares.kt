@@ -1,14 +1,18 @@
 package com.negocio.comidajipijapa.Vistas
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight // Importante para el TopAppBar
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign // Importante para el TopAppBar
@@ -24,6 +28,10 @@ import com.negocio.comidajipijapa.Modelo.locales
 fun Lugares(navController: NavController) {
     // Cambié el nombre de la variable para consistencia con ejemplos anteriores
     var estadoConsulta by remember { mutableStateOf(TextFieldValue("")) }
+    //Estado para controlar la visibilidad del dialogo de salida
+    var mostrarDialogoSalida by remember { mutableStateOf(false) }
+    //Obtener la actividad actual para poder cerrarla
+    val actividad = (LocalContext.current as? Activity)
 
     Scaffold(
         topBar = {
@@ -37,6 +45,15 @@ fun Lugares(navController: NavController) {
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )
+                },
+                actions = {
+                    IconButton(onClick = {mostrarDialogoSalida = true}) {
+                        Icon(
+                            imageVector = Icons.Filled.ExitToApp,
+                            contentDescription = "",
+                            tint = Color.White
+                        )
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(33, 215, 109) // verde lima
@@ -100,5 +117,29 @@ fun Lugares(navController: NavController) {
                 }
             }
         }
+    }
+    // Diálogo de confirmación para salir
+    if (mostrarDialogoSalida) {
+        AlertDialog(
+            onDismissRequest = { mostrarDialogoSalida = false }, // Cerrar diálogo si se toca fuera
+            title = { Text("Confirmar Salida") },
+            text = { Text("¿Estás seguro de que deseas salir de la aplicación?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        actividad?.finishAffinity() // Cierra esta actividad y todas las de la app
+                        mostrarDialogoSalida = false
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error) // Color rojo para acción destructiva
+                ) {
+                    Text("Salir", color = MaterialTheme.colorScheme.onError)
+                }
+            },
+            dismissButton = {
+                Button(onClick = { mostrarDialogoSalida = false }) {
+                    Text("Cancelar")
+                }
+            }
+        )
     }
 }

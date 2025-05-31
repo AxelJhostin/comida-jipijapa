@@ -59,6 +59,8 @@ fun Restaurante(navController: NavController, local: Local) {
                         )
                     }
                 },
+                //esto es para el boton de favoritos
+                /*
                 actions = {
                     IconButton(onClick = {isFavorita = !isFavorita}) {
                         if (isFavorita){
@@ -75,7 +77,7 @@ fun Restaurante(navController: NavController, local: Local) {
                             )
                         }
                     }
-                },
+                },*/
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(33,215,109)
                 )
