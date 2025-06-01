@@ -22,6 +22,8 @@ import androidx.navigation.NavController
 import com.negocio.comidajipijapa.Componentes.BarraBusqueda // Asumo que el parámetro de BarraBusqueda es 'estadoConsulta'
 import com.negocio.comidajipijapa.Componentes.LocalOpcion
 import com.negocio.comidajipijapa.Modelo.locales
+import androidx.activity.compose.LocalActivity
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,7 +33,8 @@ fun Lugares(navController: NavController) {
     //Estado para controlar la visibilidad del dialogo de salida
     var mostrarDialogoSalida by remember { mutableStateOf(false) }
     //Obtener la actividad actual para poder cerrarla
-    val actividad = (LocalContext.current as? Activity)
+    val actividad = LocalActivity.current
+
 
     Scaffold(
         topBar = {
