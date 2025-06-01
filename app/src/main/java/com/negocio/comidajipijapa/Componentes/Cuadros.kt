@@ -1,160 +1,188 @@
-package com.negocio.comidajipijapa.Componentes
+package com.negocio.comidajipijapa.Componentes // Asegúrate que este sea tu paquete
 
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Call // Para botón Llamar
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.DateRange
+import androidx.compose.material.icons.outlined.LocationOn // Para InfoRow (Dirección)
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter // Usamos rememberAsyncImagePainter
 import com.negocio.comidajipijapa.Modelo.Local
 import com.negocio.comidajipijapa.R
-import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 
 @Composable
 fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
-    val context = LocalContext.current
+    // val context = LocalContext.current // Ya no se necesita si los botones de Intent se van
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
-            .clickable { onClick() },
-        elevation = CardDefaults.cardElevation(4.dp),
+            .clickable { onClick() }, // La tarjeta entera sigue siendo clickeable para navegar
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
-            //containerColor = Color(224, 247, 250) // principal base
-            //containerColor = Color(156,39,176) // sabores tradicionales
-            containerColor = Color(205, 248, 184, 255)//verde azulado oscuro
+            containerColor = Color(205, 248, 184) // Tu color verde pálido (RGB)
         )
     ) {
-        Column(modifier = Modifier.padding(12.dp)) {
-            // Modificación para redimensionar la imagen
-            val painter = rememberImagePainter(
-                data = local.imagenUrl,
-                builder = {
-                    //el crossfade hace algo raro, que la imagen la hace pequeña hasta que mueva
-                    //la esa para abajo o para arriba, las razones no las sé
-                    //por eso la deje en false
-                    crossfade(false) // Deslizar para transición suave
-                    placeholder(R.drawable.placeholder) // Placeholder
-                    error(R.drawable.error) // Imagen de error
-                    size(1200, 1200) // Redimensionar la imagen
-                }
+        Column {
+            val imagePainter = rememberAsyncImagePainter(
+                model = local.imagenUrl,
+                placeholder = painterResource(R.drawable.placeholder),
+                error = painterResource(R.drawable.error)
             )
             Image(
-                painter = painter,
-                contentDescription = "Imagen del local",
+                painter = imagePainter,
+                contentDescription = "Imagen del local: ${local.nombre}",
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(180.dp)  // Ajusta la altura según lo necesites
+                    .height(170.dp)
+                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                    .background(Color(204, 204, 204)) // Color LightGray en RGB
             )
-            EspacioV(8)
-            Text(
-                text = local.nombre,
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-            )
-            Text(
-                text = "Horario: ${local.horario}",
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Text(
-                text = "Días: ${local.diasAtencion.joinToString()}",
-                style = MaterialTheme.typography.bodySmall
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Button(
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(116, 165, 123, 255),
-                        contentColor = Color(12, 13, 13)
-                    ),
-                    onClick = {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(local.menuUrl))
-                        context.startActivity(intent)
-                    }
-                ) {
-                    Text("Menú")
-                }
 
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
+            ) {
+                Text(
+                    text = local.nombre,
+                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    color = Color(0, 77, 64) // Tu verde oscuro (0xFF004D40) en RGB
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                // Información del local con TUS íconos preferidos
+                InfoRowWithIcon(
+                    icon = Icons.Outlined.Star, // Ícono que usas para Horario
+                    text = "Horario: ${local.horario}"
+                )
+                InfoRowWithIcon(
+                    icon = Icons.Outlined.LocationOn, // Ícono que usas para Dirección
+                    text = "Dirección: ${local.direccionFisica}"
+                )
+                InfoRowWithIcon(
+                    icon = Icons.Outlined.DateRange, // Ícono que usas para Días
+                    text = "Días: ${local.diasAtencion.joinToString(", ")}"
+                )
+
+                Spacer(modifier = Modifier.height(16.dp)) // Espacio antes del nuevo botón
+
+                // --- NUEVO BOTÓN ÚNICO PARA NAVEGAR ---
                 Button(
+                    onClick = onClick, // Llama a la función onClick principal para navegar
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(116, 165, 123, 255),
-                        contentColor = Color(12, 13, 13)
-                    ),
-                    onClick = {
-                        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${local.telefono}"))
-                        context.startActivity(intent)
-                    }
+                        containerColor = Color(0, 121, 107), // Un teal oscuro (0xFF00796B) en RGB
+                        contentColor = Color(255, 255, 255)  // Color Blanco en RGB
+                    )
                 ) {
-                    Text("Llamar")
-                }
-                Button(
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(116, 165, 123, 255),
-                        contentColor = Color(12, 13, 13)
-                    ),
-                    onClick = {
-                        val intent = Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("https://wa.me/${local.telefono}?text=¡Hola! Quiero más información sobre tu menú.")
-                        )
-                        context.startActivity(intent)
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("WhatsApp")
+                    Text("Ver Detalles") // Texto más corto para el botón
+                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                    Icon(
+                        imageVector = Icons.Filled.ArrowForward,
+                        contentDescription = null,
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                    )
                 }
             }
         }
     }
 }
 
-
-@Preview(showBackground = true)
 @Composable
-fun LocalOpcionPreview() {
-    val localDemo = Local(
-        id = "1",
-        nombre = "Pizzería Don Mario",
-        horario = "12:00 PM - 10:00 PM",
-        categoria = "Pizzería",
-        telefono = "0987654321",
-        menuUrl = "https://drive.google.com/file/d/13Gb6zphmZ9DZ0c9xuQm1CqFfN7WiyXdh/view?usp=sharing",
-        ubicacion = "https://maps.google.com/?q=-1.34,-80.02",
-        imagenUrl = "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
-        imagenesExtra = listOf(
-            "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
-            "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
-            "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE",
-            "https://drive.google.com/uc?export=download&id=1A4aQVIf3bvu4-t7R99ZuliLhrKJJjOTE"
-        ),
-        diasAtencion = listOf("Lunes", "Martes", "Miércoles", "Viernes", "Sábado")
-    )
-    LocalOpcion(local = localDemo)
+fun InfoRowWithIcon(
+    icon: ImageVector,
+    text: String,
+    iconTint: Color = MaterialTheme.colorScheme.onSurfaceVariant // Color sutil para el ícono
+) {
+    Row(
+        verticalAlignment = Alignment.Top, // Mejor si el texto ocupa varias líneas
+        modifier = Modifier.padding(vertical = 3.dp) // Espacio vertical para cada fila de info
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null, // El texto ya es descriptivo
+            tint = iconTint,
+            modifier = Modifier.size(18.dp).padding(end = 8.dp) // Espacio entre ícono y texto
+        )
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface // Color de texto principal
+        )
+    }
 }
 
+@Composable
+fun ActionButton(
+    text: String,
+    icon: ImageVector?, // El ícono es opcional
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    buttonColors: ButtonColors = ButtonDefaults.buttonColors(),
+    // Padding interno del botón, ajustado para que quepa el texto e ícono
+    contentPadding: PaddingValues = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier,
+        shape = RoundedCornerShape(12.dp), // Botones con esquinas redondeadas
+        colors = buttonColors,
+        contentPadding = contentPadding
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center // Centra el contenido si hay espacio extra
+        ) {
+            if (icon != null) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null, // El texto del botón sirve de descripción
+                    modifier = Modifier.size(18.dp) // Tamaño del ícono
+                )
+                Spacer(modifier = Modifier.width(4.dp)) // Espacio reducido entre ícono y texto
+            }
+            Text(
+                text = text,
+                fontSize = 12.sp, // Tamaño de fuente reducido para que no se corte
+                maxLines = 1,     // Asegurar una sola línea
+                overflow = TextOverflow.Ellipsis // Truncar con "..." si aún así no cabe
+            )
+        }
+    }
+}
 
+// Puedes mantener tus EspacioV y EspacioH si los usas en otros lugares,
+// o reemplazarlos por Spacer(modifier = Modifier.height(X.dp)) directamente.
 @Composable
 fun EspacioV(i: Int) {
     Spacer(modifier = Modifier.height(i.dp))
@@ -163,4 +191,28 @@ fun EspacioV(i: Int) {
 @Composable
 fun EspacioH(i: Int) {
     Spacer(modifier = Modifier.width(i.dp))
+}
+
+// El Preview sigue siendo útil para ver tus cambios en LocalOpcion
+@Preview(showBackground = true, backgroundColor = 0xFFF0F0F0)
+@Composable
+fun LocalOpcionPreview() {
+    val localDemo = Local(
+        id = "1",
+        nombre = "Pizzería Don Genaro Auténtico Sabor", // Nombre más largo
+        horario = "11:00 AM - 10:30 PM sin interrupción", // Horario más largo
+        categoria = "Pizzería",
+        telefono = "0987654321",
+        menuUrl = "http://example.com/menu",
+        ubicacion = "http://maps.google.com/lugar",
+        // Usa una URL de imagen pública para que el preview funcione mejor
+        imagenUrl = "https://www.publicdomainpictures.net/pictures/320000/nahled/pizza-slice.jpg",
+        direccionFisica = "Avenida de las Palmeras 456, Esquina Sol Brillante, Jipijapa", // Dirección más larga
+        imagenesExtra = listOf(),
+        diasAtencion = listOf("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"),
+        instagram = "http://instagram.com/pizzeriadongenaro"
+    )
+    Column(Modifier.padding(16.dp)) { // Padding alrededor para ver bien la Card en el Preview
+        LocalOpcion(local = localDemo) {}
+    }
 }

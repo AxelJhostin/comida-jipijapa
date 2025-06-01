@@ -39,10 +39,17 @@ fun ActionButton(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BarraBusqueda(searchQuery: MutableState<TextFieldValue>) {
+fun BarraBusqueda(
+    valorActual: TextFieldValue, // 1. Parámetro para el valor actual
+    alCambiarValor: (TextFieldValue) -> Unit, // 2. Lambda para notificar cambios
+    modifier: Modifier = Modifier // 3. Permitir pasar un modifier externo
+) {
     OutlinedTextField(
-        value = searchQuery.value,
-        onValueChange = { searchQuery.value = it },
+        value = valorActual, // Usar el valor directamente
+        onValueChange = alCambiarValor, // Llamar a la lambda cuando cambie
+        modifier = modifier // Aplicar el modifier externo primero
+            .fillMaxWidth()
+            .padding(16.dp), // Tu padding original
         leadingIcon = {
             Icon(imageVector = Icons.Default.Search, contentDescription = "Buscar")
         },
@@ -52,11 +59,8 @@ fun BarraBusqueda(searchQuery: MutableState<TextFieldValue>) {
             unfocusedBorderColor = Color(178, 235, 242), // #B2EBF2
             focusedBorderColor = Color(0, 188, 212),     // #00BCD4
             cursorColor = Color(0, 188, 212),            // #00BCD4
-            focusedLabelColor = Color(0, 121, 107)       // #00796B
+            focusedLabelColor = Color(0, 121, 107)       // #00796B (no tiene efecto sin un 'label')
         ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        shape = MaterialTheme.shapes.large
+        shape = MaterialTheme.shapes.large // Tu forma original
     )
 }
