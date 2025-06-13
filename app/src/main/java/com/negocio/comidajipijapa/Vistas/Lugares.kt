@@ -1,6 +1,5 @@
 package com.negocio.comidajipijapa.Vistas
 
-import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,76 +11,99 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight // Importante para el TopAppBar
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign // Importante para el TopAppBar
-import androidx.compose.ui.unit.dp // Importante para PaddingValues y Arrangement.spacedBy
-import androidx.compose.ui.unit.sp // Importante para el TopAppBar
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.negocio.comidajipijapa.Componentes.BarraBusqueda // Asumo que el parámetro de BarraBusqueda es 'estadoConsulta'
+import com.negocio.comidajipijapa.Componentes.BarraBusqueda
 import com.negocio.comidajipijapa.Componentes.LocalOpcion
 import com.negocio.comidajipijapa.Modelo.locales
 import androidx.activity.compose.LocalActivity
 
+// Asegúrate de tener estas importaciones para las mejoras:
+// import androidx.compose.ui.input.nestedscroll.nestedScroll
+// import androidx.compose.ui.text.font.FontFamily
+// import androidx.compose.ui.text.style.TextOverflow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Lugares(navController: NavController) {
-    // Cambié el nombre de la variable para consistencia con ejemplos anteriores
     var estadoConsulta by remember { mutableStateOf(TextFieldValue("")) }
-    //Estado para controlar la visibilidad del dialogo de salida
     var mostrarDialogoSalida by remember { mutableStateOf(false) }
-    //Obtener la actividad actual para poder cerrarla
     val actividad = LocalActivity.current
 
+    // --- MEJORA 1: Scroll Behavior ---
+    // Esto permite que la TopAppBar reaccione al hacer scroll (ej. cambiando de color o elevación).
+    // Le da un toque muy profesional a la UI.
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
+    // --- MEJORA 2: Conectar el Scroll Behavior con el Scaffold ---
+    // Usamos Modifier.nestedScroll para que el Scaffold sepa cómo manejar el scroll de la lista
+    // y aplicarlo a la TopAppBar.
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
+            // --- MEJORA 3: Usar CenterAlignedTopAppBar ---
+            // Este componente está específicamente diseñado para centrar el título de forma correcta,
+            // considerando el espacio de los íconos de acción.
+            CenterAlignedTopAppBar(
                 title = {
-                    Text( // Título mejorado y centrado
-                        text = "Locales en Jipijapa",
-                        color = Color.White,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center
+                    Text(
+                        // Sugerencia: Usar el nombre completo puede verse más profesional.
+                        text = "Jipi-Jama",
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis, // Evita que el texto se desborde si es muy largo
+                        fontWeight = FontWeight.Normal,   // Un peso Normal o Medium puede ser más elegante
+                        fontFamily = FontFamily.Serif      // Una fuente con serifa añade un toque clásico/elegante
                     )
                 },
                 actions = {
-                    IconButton(onClick = {mostrarDialogoSalida = true}) {
+                    IconButton(onClick = { mostrarDialogoSalida = true }) {
                         Icon(
                             imageVector = Icons.Filled.ExitToApp,
-                            contentDescription = "",
-                            tint = Color.White
+                            contentDescription = "Salir de la aplicación" // Siempre es bueno añadir descripción
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(33, 215, 109) // verde lima
-                )
+                // --- MEJORA 4: Paleta de colores refinada y dinámica ---
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    // Color principal de la barra
+                    containerColor = Color(0xFFF57F17), // Un tono naranja/mostaza elegante (Tono 700 de Material Yellow)
+
+                    // Color del título y los íconos
+                    titleContentColor = Color.White,
+                    actionIconContentColor = Color.White,
+
+                    // Color que toma la barra cuando se hace scroll hacia abajo.
+                    // Puede ser el mismo o uno ligeramente más oscuro para dar profundidad.
+                    scrolledContainerColor = Color(0xE4F57F17) // Un tono más oscuro del naranja (Tono 900)
+                ),
+                // --- MEJORA 5: Aplicar el comportamiento de scroll ---
+                scrollBehavior = scrollBehavior
             )
         }
-    ) { valoresPadding -> // Cambiado a español para consistencia
+    ) { valoresPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(valoresPadding) // Padding del Scaffold
-                .background(Color(248, 249, 250)) // Un fondo ligeramente diferente
+                .padding(valoresPadding)
+                .background(Color(0xFFFFFDF9)) // Un fondo "off-white" muy sutil
         ) {
-            // Asegúrate que tu componente BarraBusqueda acepte 'estadoConsulta'
             BarraBusqueda(
                 valorActual = estadoConsulta,
-                alCambiarValor = { nuevoValor -> estadoConsulta = nuevoValor }
-                // Puedes añadir un Modifier aquí si es necesario, ej:
-                // modifier = Modifier.padding(top = 8.dp)
+                alCambiarValor = { nuevoValor -> estadoConsulta = nuevoValor },
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
 
-            val localesFiltrados = locales.filter { local -> // Cambiado a 'localesFiltrados'
-                estadoConsulta.text.isBlank() || // Mostrar todos si la búsqueda está vacía
+            val localesFiltrados = locales.filter { local ->
+                estadoConsulta.text.isBlank() ||
                         local.nombre.contains(estadoConsulta.text, ignoreCase = true) ||
-                        local.categoria.contains(estadoConsulta.text, ignoreCase = true) // Búsqueda por categoría también
+                        local.categoria.contains(estadoConsulta.text, ignoreCase = true)
             }
 
             if (localesFiltrados.isEmpty()) {
@@ -102,15 +124,8 @@ fun Lugares(navController: NavController) {
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    // Espacio VERTICAL ENTRE las tarjetas:
                     verticalArrangement = Arrangement.spacedBy(16.dp),
-                    // Padding HORIZONTAL y VERTICAL para la lista completa:
-                    contentPadding = PaddingValues(
-                        start = 20.dp,   // Espacio a la izquierda de la lista
-                        end = 20.dp,     // Espacio a la derecha de la lista
-                        top = 16.dp,     // Espacio arriba de la primera tarjeta
-                        bottom = 20.dp   // Espacio debajo de la última tarjeta
-                    )
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp)
                 ) {
                     items(localesFiltrados, key = { local -> local.id }) { local ->
                         LocalOpcion(local = local) {
@@ -121,25 +136,25 @@ fun Lugares(navController: NavController) {
             }
         }
     }
-    // Diálogo de confirmación para salir
+
     if (mostrarDialogoSalida) {
         AlertDialog(
-            onDismissRequest = { mostrarDialogoSalida = false }, // Cerrar diálogo si se toca fuera
+            onDismissRequest = { mostrarDialogoSalida = false },
             title = { Text("Confirmar Salida") },
             text = { Text("¿Estás seguro de que deseas salir de la aplicación?") },
             confirmButton = {
                 Button(
                     onClick = {
-                        actividad?.finishAffinity() // Cierra esta actividad y todas las de la app
+                        actividad?.finishAffinity()
                         mostrarDialogoSalida = false
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error) // Color rojo para acción destructiva
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) {
                     Text("Salir", color = MaterialTheme.colorScheme.onError)
                 }
             },
             dismissButton = {
-                Button(onClick = { mostrarDialogoSalida = false }) {
+                OutlinedButton(onClick = { mostrarDialogoSalida = false }) { // Un botón delineado para la acción secundaria se ve bien
                     Text("Cancelar")
                 }
             }

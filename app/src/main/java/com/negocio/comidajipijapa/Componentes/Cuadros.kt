@@ -46,7 +46,7 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(205, 248, 184) // Tu color verde pálido (RGB)
+            containerColor = Color(0xE4F57F17) // Tu color verde pálido (RGB)
         )
     ) {
         Column {
@@ -63,7 +63,7 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
                     .fillMaxWidth()
                     .height(170.dp)
                     .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-                    .background(Color(204, 204, 204)) // Color LightGray en RGB
+                    .background(Color(249,115,22)) // Color LightGray en RGB
             )
 
             Column(
@@ -74,7 +74,7 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
                 Text(
                     text = local.nombre,
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                    color = Color(0, 77, 64) // Tu verde oscuro (0xFF004D40) en RGB
+                    color = Color(66,32,6) // Tu verde oscuro (0xFF004D40) en RGB
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -101,7 +101,7 @@ fun LocalOpcion(local: Local, onClick: () -> Unit = {}) {
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0, 121, 107), // Un teal oscuro (0xFF00796B) en RGB
+                        containerColor = Color(234,88,12), // Un teal oscuro (0xFF00796B) en RGB
                         contentColor = Color(255, 255, 255)  // Color Blanco en RGB
                     )
                 ) {
