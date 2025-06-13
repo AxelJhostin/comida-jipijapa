@@ -27,8 +27,10 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.negocio.comidajipijapa.Componentes.DetailItemRow
 import com.negocio.comidajipijapa.Data.FavoritosPrefs
+import com.negocio.comidajipijapa.Data.getImageFromCacheOrDownload
 import com.negocio.comidajipijapa.Modelo.Local
 import com.negocio.comidajipijapa.R
+import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,13 +79,13 @@ fun Restaurante(navController: NavController, local: Local) {
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(33, 215, 109)
+                    containerColor = Color(249,115,22)
                 )
             )
         },
         bottomBar = {
             BottomAppBar(
-                containerColor = Color(33, 215, 109),
+                containerColor = Color(249,115,22),
                 contentColor = Color.White,
                 tonalElevation = 8.dp
             ) {
@@ -119,13 +121,18 @@ fun Restaurante(navController: NavController, local: Local) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(Color(250, 250, 250))
+                .background(Color(255, 251, 245))
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
+            val context = LocalContext.current
+            val imageFile by produceState<File?>(initialValue = null, key1 = local.imagenUrl) {
+                value = getImageFromCacheOrDownload(context, local.imagenUrl)
+            }
+
             Image(
                 painter = rememberAsyncImagePainter(
-                    model = local.imagenUrl,
+                    model = imageFile ?: local.imagenUrl,
                     placeholder = painterResource(R.drawable.placeholder),
                     error = painterResource(R.drawable.error)
                 ),
@@ -135,8 +142,11 @@ fun Restaurante(navController: NavController, local: Local) {
                     .height(220.dp)
                     .padding(bottom = 16.dp)
                     .background(Color.LightGray, RoundedCornerShape(12.dp))
-                    .clickable { selectedImageUrl = local.imagenUrl }
+                    .clickable {
+                        selectedImageUrl = local.imagenUrl
+                    }
             )
+
 
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -153,7 +163,7 @@ fun Restaurante(navController: NavController, local: Local) {
                         text = local.nombre,
                         fontSize = 26.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF00796B),
+                        color = Color(66,32,6),
                         modifier = Modifier
                             .padding(bottom = 16.dp)
                             .align(Alignment.CenterHorizontally)
@@ -163,25 +173,25 @@ fun Restaurante(navController: NavController, local: Local) {
                         icon = Icons.Outlined.Info,
                         label = "Horario:",
                         value = local.horario,
-                        iconColor = Color(0xFF00796B)
+                        iconColor = Color(234,88,12)
                     )
                     DetailItemRow(
                         icon = Icons.Outlined.Phone,
                         label = "Teléfono:",
                         value = local.telefono,
-                        iconColor = Color(0xFF00796B)
+                        iconColor = Color(234,88,12)
                     )
                     DetailItemRow(
                         icon = Icons.Outlined.DateRange,
                         label = "Atención:",
                         value = local.diasAtencion.joinToString(", "),
-                        iconColor = Color(0xFF00796B)
+                        iconColor = Color(234,88,12)
                     )
                     DetailItemRow(
                         icon = Icons.Outlined.LocationOn,
                         label = "Dirección:",
                         value = local.direccionFisica,
-                        iconColor = Color(0xFF00796B)
+                        iconColor = Color(234,88,12)
                     )
                 }
             }

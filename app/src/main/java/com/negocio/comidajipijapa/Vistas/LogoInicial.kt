@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
@@ -17,8 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,42 +34,75 @@ import com.negocio.comidajipijapa.R
 import kotlinx.coroutines.delay
 
 @Composable
-fun LogoInicial(navController: NavController){
-//Efecto para pasar de pantalla a otra pasando 3 segundos
+fun LogoInicial(navController: NavController) {
     LaunchedEffect(Unit) {
-        delay(2000)
-        navController.navigate("Lugares")
+        delay(2500)
+        navController.navigate("Lugares") {
+            popUpTo(navController.graph.startDestinationId) {
+                inclusive = true
+            }
+        }
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(249, 115, 22)),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        // Imagen de fondo
-        Image(
-            painter = painterResource(R.drawable.fondoplaya), // Usa aquí tu imagen de fondo
-            contentDescription = "Fondo de pantalla",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
-
-        // Contenido centrado sobre la imagen
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+        // --- AQUÍ ESTÁ EL CAMBIO ---
+        // Se crea un Box con fondo blanco para que sirva de base para el logo.
+        Box(
+            modifier = Modifier
+                .size(220.dp)
+                .clip(CircleShape)
+                .background(Color.White)
+                .padding(16.dp), // Espacio para que el logo no toque los bordes del círculo blanco
+            contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(R.drawable.logocomida), // Tu logo redondo
-                contentDescription = "Logo",
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .size(300.dp)
+                painter = painterResource(R.drawable.logo),
+                contentDescription = "Logo de Jipi-Jama",
+                modifier = Modifier.fillMaxSize()
             )
-            Spacer(modifier = Modifier.height(20.dp))
-            Text("¿Dónde comer?", fontSize = 25.sp, color = Color.White)
-            Spacer(modifier = Modifier.height(20.dp))
-            Text("Jipijapa", fontSize = 50.sp, color = Color(0xFF21D76D)) // Verde personalizado
         }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text(
+            buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        color = Color.White,
+                        fontSize = 70.sp,
+                        fontFamily = FontFamily.SansSerif,
+                        fontWeight = FontWeight.Bold
+                    )
+                ) {
+                    append("Jipi")
+                }
+                withStyle(
+                    style = SpanStyle(
+                        color = Color.White,
+                        fontSize = 70.sp,
+                        fontFamily = FontFamily.SansSerif,
+                        fontWeight = FontWeight.Light
+                    )
+                ) {
+                    append("-Jama")
+                }
+            }
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = "¿Dónde comer?",
+            color = Color.White.copy(alpha = 0.8f),
+            fontSize = 18.sp,
+            fontStyle = FontStyle.Italic
+        )
     }
 }
 
