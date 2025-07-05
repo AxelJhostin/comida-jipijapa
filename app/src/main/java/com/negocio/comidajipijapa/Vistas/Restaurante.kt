@@ -16,21 +16,23 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.negocio.comidajipijapa.Componentes.DetailItemRow
 import com.negocio.comidajipijapa.Data.FavoritosPrefs
-import com.negocio.comidajipijapa.Data.getImageFromCacheOrDownload
 import com.negocio.comidajipijapa.Modelo.Local
 import com.negocio.comidajipijapa.R
-import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,6 +43,36 @@ fun Restaurante(navController: NavController, local: Local) {
     val favoritosPrefs = remember { FavoritosPrefs(context) }
     var isFavorita by remember { mutableStateOf(favoritosPrefs.esFavorito(local.id)) }
 
+    // --- INICIO DE LA MEJORA: DIÁLOGO PARA IMAGEN EN PANTALLA COMPLETA ---
+    if (selectedImageUrl != null) {
+        Dialog(
+            onDismissRequest = { selectedImageUrl = null },
+            properties = DialogProperties(usePlatformDefaultWidth = false) // Permite que el diálogo ocupe toda la pantalla
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.85f))
+                    .clickable { selectedImageUrl = null }, // Cierra el diálogo al tocar el fondo
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = rememberAsyncImagePainter(
+                        model = selectedImageUrl,
+                        placeholder = painterResource(R.drawable.placeholder),
+                        error = painterResource(R.drawable.error)
+                    ),
+                    contentDescription = "Imagen a pantalla completa",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                )
+            }
+        }
+    }
+    // --- FIN DE LA MEJORA ---
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -50,7 +82,7 @@ fun Restaurante(navController: NavController, local: Local) {
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = "Restaurante", color = Color.White)
+                        Text(text = "Restaurante", color = MaterialTheme.colorScheme.onPrimary)
                     }
                 },
                 navigationIcon = {
@@ -58,7 +90,7 @@ fun Restaurante(navController: NavController, local: Local) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Atrás",
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 },
@@ -74,19 +106,19 @@ fun Restaurante(navController: NavController, local: Local) {
                         Icon(
                             imageVector = if (isFavorita) Icons.Filled.Star else Icons.Outlined.Star,
                             contentDescription = "Favorito",
-                            tint = if (isFavorita) Color(255, 215, 0) else Color.White
+                            tint = if (isFavorita) Color(255, 215, 0) else MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(249,115,22)
+                    containerColor = MaterialTheme.colorScheme.primary
                 )
             )
         },
         bottomBar = {
             BottomAppBar(
-                containerColor = Color(249,115,22),
-                contentColor = Color.White,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
                 tonalElevation = 8.dp
             ) {
                 Row(
@@ -121,37 +153,33 @@ fun Restaurante(navController: NavController, local: Local) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(Color(255, 251, 245))
+                .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
-            val context = LocalContext.current
-            val imageFile by produceState<File?>(initialValue = null, key1 = local.imagenUrl) {
-                value = getImageFromCacheOrDownload(context, local.imagenUrl)
-            }
-
             Image(
                 painter = rememberAsyncImagePainter(
-                    model = imageFile ?: local.imagenUrl,
+                    model = local.imagenUrl,
                     placeholder = painterResource(R.drawable.placeholder),
                     error = painterResource(R.drawable.error)
                 ),
                 contentDescription = "Imagen del local",
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(220.dp)
                     .padding(bottom = 16.dp)
-                    .background(Color.LightGray, RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
                     .clickable {
                         selectedImageUrl = local.imagenUrl
                     }
             )
 
-
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
                 Column(
@@ -163,7 +191,7 @@ fun Restaurante(navController: NavController, local: Local) {
                         text = local.nombre,
                         fontSize = 26.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(66,32,6),
+                        color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier
                             .padding(bottom = 16.dp)
                             .align(Alignment.CenterHorizontally)
@@ -173,25 +201,25 @@ fun Restaurante(navController: NavController, local: Local) {
                         icon = Icons.Outlined.Info,
                         label = "Horario:",
                         value = local.horario,
-                        iconColor = Color(234,88,12)
+                        iconColor = MaterialTheme.colorScheme.secondary
                     )
                     DetailItemRow(
                         icon = Icons.Outlined.Phone,
                         label = "Teléfono:",
                         value = local.telefono,
-                        iconColor = Color(234,88,12)
+                        iconColor = MaterialTheme.colorScheme.secondary
                     )
                     DetailItemRow(
                         icon = Icons.Outlined.DateRange,
                         label = "Atención:",
                         value = local.diasAtencion.joinToString(", "),
-                        iconColor = Color(234,88,12)
+                        iconColor = MaterialTheme.colorScheme.secondary
                     )
                     DetailItemRow(
                         icon = Icons.Outlined.LocationOn,
                         label = "Dirección:",
                         value = local.direccionFisica,
-                        iconColor = Color(234,88,12)
+                        iconColor = MaterialTheme.colorScheme.secondary
                     )
                 }
             }
@@ -202,7 +230,8 @@ fun Restaurante(navController: NavController, local: Local) {
                     text = "Galería de Imágenes",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(bottom = 12.dp, start = 4.dp)
+                    modifier = Modifier.padding(bottom = 12.dp, start = 4.dp),
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -214,9 +243,11 @@ fun Restaurante(navController: NavController, local: Local) {
                                 error = painterResource(R.drawable.error)
                             ),
                             contentDescription = "Imagen extra",
+                            contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(180.dp)
+                                .clip(RoundedCornerShape(12.dp))
                                 .clickable { selectedImageUrl = imageUrl }
                         )
                     }
@@ -228,10 +259,11 @@ fun Restaurante(navController: NavController, local: Local) {
 
 @Composable
 fun BottomIconText(label: String, icon: ImageVector, onClick: () -> Unit) {
+    val contentColor = LocalContentColor.current
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         IconButton(onClick = onClick) {
-            Icon(icon, contentDescription = label, tint = Color.White, modifier = Modifier.size(24.dp))
+            Icon(icon, contentDescription = label, tint = contentColor, modifier = Modifier.size(24.dp))
         }
-        Text(label, fontSize = 13.sp, color = Color.White)
+        Text(label, fontSize = 13.sp, color = contentColor)
     }
 }

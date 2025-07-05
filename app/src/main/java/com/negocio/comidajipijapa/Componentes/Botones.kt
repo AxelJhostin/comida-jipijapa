@@ -56,10 +56,10 @@ fun BarraBusqueda(
         placeholder = { Text("Buscar restaurante...") },
         singleLine = true,
         colors = OutlinedTextFieldDefaults.colors(
-            unfocusedBorderColor = Color(178, 235, 242), // #B2EBF2
-            focusedBorderColor = Color(0, 188, 212),     // #00BCD4
-            cursorColor = Color(0, 188, 212),            // #00BCD4
-            focusedLabelColor = Color(0, 121, 107)       // #00796B (no tiene efecto sin un 'label')
+            unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            cursorColor = MaterialTheme.colorScheme.primary,
+            focusedLabelColor = Color(0, 121, 107)
         ),
         shape = MaterialTheme.shapes.large // Tu forma original
     )
