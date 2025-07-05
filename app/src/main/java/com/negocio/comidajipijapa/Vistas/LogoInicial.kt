@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -47,7 +48,7 @@ fun LogoInicial(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(249, 115, 22)),
+            .background(MaterialTheme.colorScheme.primary),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -84,7 +85,7 @@ fun LogoInicial(navController: NavController) {
                 }
                 withStyle(
                     style = SpanStyle(
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         fontSize = 70.sp,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.Light
@@ -99,7 +100,7 @@ fun LogoInicial(navController: NavController) {
 
         Text(
             text = "¿Dónde comer?",
-            color = Color.White.copy(alpha = 0.8f),
+            color = MaterialTheme.colorScheme.onPrimary,
             fontSize = 18.sp,
             fontStyle = FontStyle.Italic
         )

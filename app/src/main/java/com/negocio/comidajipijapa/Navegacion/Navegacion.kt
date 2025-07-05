@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.negocio.comidajipijapa.Modelo.Local
 import com.negocio.comidajipijapa.Modelo.locales
+import com.negocio.comidajipijapa.Vistas.FavoritosScreen
 import com.negocio.comidajipijapa.Vistas.LogoInicial
 import com.negocio.comidajipijapa.Vistas.Lugares
 import com.negocio.comidajipijapa.Vistas.Restaurante
@@ -35,6 +36,9 @@ fun Navegacion(){
                 // Puedes mostrar un mensaje de error o pantalla vacía
                 Text("Local no encontrado")
             }
+        }
+        composable("Favoritos") {
+            FavoritosScreen(navController)
         }
 
     }

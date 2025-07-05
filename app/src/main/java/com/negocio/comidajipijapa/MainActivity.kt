@@ -19,10 +19,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Navegacion()
-            //prueba de funcionamiento desde el main
-            //prueba desde la nueva ramalapto
+            // Envolvemos la navegación con nuestro tema personalizado
+            ComidajipijapaTheme {
+                Navegacion()
+            }
         }
     }
 }
-
